@@ -1,0 +1,49 @@
+name: Android CI
+on: workflow_dispatch
+
+env:
+  HAXE_VERSION: 4.3.5
+
+jobs:
+  android:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nttld/setup-ndk@main
+        id: setup-ndk
+        with:
+          ndk-version: r15c
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+      - name: Set HAXEPATH
+        run: |
+          echo "HAXEPATH=$HAXE_STD_PATH/.." >> $GITHUB_ENV
+      - name: Install Haxe dependencies
+        run: |
+          haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp --quiet
+          haxelib install format --quiet
+          haxelib install hxp --quiet
+      - name: Enable HXCPP compile cache
+        run: |
+          echo "HXCPP_COMPILE_CACHE=~/.hxcpp" >> $GITHUB_ENV
+      - name: Configure Lime
+        run: |
+          haxelib dev lime ${{ github.workspace }}
+          haxelib run lime config ANDROID_NDK_ROOT ${{ steps.setup-ndk.outputs.ndk-path }}
+          haxelib run lime config ANDROID_SETUP true
+          haxelib run lime setup -alias -y -nocffi
+      - name: Rebuild Lime (Android)
+        continue-on-error: true
+        run: |
+          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_ARMV7
+          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_ARM64
+          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_X86
+          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_X86_64
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Android-NDLL
+          path: |
+            ndll/Android/
+            !**/.gitignore
+          if-no-files-found: error

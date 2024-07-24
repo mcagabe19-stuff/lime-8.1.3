@@ -1,0 +1,39 @@
+name: iOS CI
+on: workflow_dispatch
+
+env:
+  HAXE_VERSION: 4.3.5
+
+jobs:
+  ios:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+      - name: Set HAXEPATH
+        run: |
+          echo "HAXEPATH=$HAXE_STD_PATH/.." >> $GITHUB_ENV
+      - name: Install Haxe dependencies
+        run: |
+          haxelib git hxcpp https://github.com/mcagabe19-stuff/hxcpp --quiet
+          haxelib install format --quiet
+          haxelib install hxp --quiet
+      - name: Enable HXCPP compile cache
+        run: |
+          echo "HXCPP_COMPILE_CACHE=~/.hxcpp" >> $GITHUB_ENV
+      - name: Configure Lime
+        run: |
+          haxelib dev lime ${{ github.workspace }}
+          haxelib run lime setup -alias -y -nocffi
+      - name: Rebuild Lime (iOS)
+        run: |
+          lime rebuild ios -release -nocolor -nocffi -eval
+      - uses: actions/upload-artifact@v3
+        with:
+          name: iPhone-NDLL
+          path: |
+            ndll/iPhone/
+            !**/.gitignore
+          if-no-files-found: error
