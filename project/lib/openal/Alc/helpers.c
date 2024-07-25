@@ -203,7 +203,6 @@ void FillCPUCaps(int capfilter)
     }
 #else
     /* Assume support for whatever's supported if we can't check for it */
-#ifndef HXCPP_ARM64
 #if defined(HAVE_SSE4_1)
 #warning "Assuming SSE 4.1 run-time support!"
     caps |= CPU_CAP_SSE | CPU_CAP_SSE2 | CPU_CAP_SSE3 | CPU_CAP_SSE4_1;
@@ -216,7 +215,6 @@ void FillCPUCaps(int capfilter)
 #elif defined(HAVE_SSE)
 #warning "Assuming SSE run-time support!"
     caps |= CPU_CAP_SSE;
-#endif
 #endif
 #endif
 #ifdef HAVE_NEON
