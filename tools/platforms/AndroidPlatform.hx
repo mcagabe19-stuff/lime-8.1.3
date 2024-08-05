@@ -166,8 +166,8 @@ class AndroidPlatform extends PlatformTarget
 
 		for (architecture in architectures)
 		{
-			var haxeParams = [hxml, "-D", "android", "-D", "PLATFORM=android-21"];
-			var cppParams = ["-Dandroid", "-DPLATFORM=android-21"];
+			var haxeParams = [hxml, "-D", "android", "-D", "PLATFORM_NUMBER=24"];
+			var cppParams = ["-Dandroid", "-DPLATFORM_NUMBER=24"];
 			var path = sourceSet + "/jniLibs/armeabi";
 			var suffix = ".so";
 
@@ -373,11 +373,11 @@ class AndroidPlatform extends PlatformTarget
 
 		var commands = [];
 
-		if (armv5) commands.push(["-Dandroid", "-DPLATFORM=android-21"]);
-		if (armv7) commands.push(["-Dandroid", "-DHXCPP_ARMV7", "-DHXCPP_ARM7", "-DPLATFORM=android-21"]);
-		if (arm64) commands.push(["-Dandroid", "-DHXCPP_ARM64", "-DPLATFORM=android-21"]);
-		if (x86) commands.push(["-Dandroid", "-DHXCPP_X86", "-DPLATFORM=android-21"]);
-		if (x64) commands.push(["-Dandroid", "-DHXCPP_X86_64", "-DPLATFORM=android-21"]);
+		if (armv5) commands.push(["-Dandroid", "-DPLATFORM_NUMBER=24"]);
+		if (armv7) commands.push(["-Dandroid", "-DHXCPP_ARMV7", "-DHXCPP_ARM7", "-DPLATFORM_NUMBER=24"]);
+		if (arm64) commands.push(["-Dandroid", "-DHXCPP_ARM64", "-DPLATFORM_NUMBER=24"]);
+		if (x86) commands.push(["-Dandroid", "-DHXCPP_X86", "-DPLATFORM_NUMBER=24"]);
+		if (x64) commands.push(["-Dandroid", "-DHXCPP_X86_64", "-DPLATFORM_NUMBER=24"]);
 
 		CPPHelper.rebuild(project, commands);
 	}
