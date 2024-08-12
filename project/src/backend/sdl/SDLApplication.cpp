@@ -183,9 +183,11 @@ namespace lime {
 				ProcessGamepadEvent (event);
 				break;
 
-			case SDL_DRAGENTER:
-			case SDL_DRAGEXIT:
-			case SDL_DROPTEXT:
+			#ifndef EMSCRIPTEN
+				case SDL_DRAGENTER:
+				case SDL_DRAGEXIT:
+				case SDL_DROPTEXT:
+			#endif
 			case SDL_DROPFILE:
 
 				ProcessDropEvent (event);
@@ -356,17 +358,19 @@ namespace lime {
 		if (DropEvent::callback) {
 
 			switch (event->type) {
-				case SDL_DRAGENTER:
-					dropEvent.type = DRAG_ENTER;
-					break;
-				case SDL_DRAGEXIT:
-					dropEvent.type = DRAG_EXIT;
-					break;
+				#ifndef EMSCRIPTEN
+					case SDL_DRAGENTER:
+						dropEvent.type = DRAG_ENTER;
+						break;
+					case SDL_DRAGEXIT:
+						dropEvent.type = DRAG_EXIT;
+						break;
+					case SDL_DROPTEXT:
+						dropEvent.type = DROP_TEXT;
+						break;
+				#endif
 				case SDL_DROPFILE:
 					dropEvent.type = DROP_FILE;
-					break;
-				case SDL_DROPTEXT:
-					dropEvent.type = DROP_TEXT;
 					break;
 			}
 			dropEvent.file = (vbyte*)event->drop.file;
