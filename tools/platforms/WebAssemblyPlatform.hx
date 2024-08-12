@@ -212,9 +212,11 @@ class WebAssemblyPlatform extends PlatformTarget
 			// args.push("DEMANGLE_SUPPORT=1");
 		}
 
-		// set initial size
-		// args.push("-s");
-		// args.push("INITIAL_MEMORY=32MB");
+		var memory:String = project.targetFlags.get("MEM");
+		if (memory == null || memory == "") memory = "32MB";
+
+		args.push("-s");
+		args.push("INITIAL_MEMORY=" + memory);
 
 		args.push("-s");
 		args.push("STACK_SIZE=1MB");
