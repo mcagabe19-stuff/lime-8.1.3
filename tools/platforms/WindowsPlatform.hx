@@ -512,23 +512,6 @@ class WindowsPlatform extends PlatformTarget
 					CPPHelper.compile(project, targetDirectory + "/obj", flags);
 
 					System.copyFile(targetDirectory + "/obj/ApplicationMain" + (project.debug ? "-debug" : "") + ".exe", executablePath);
-					if (project.targetFlags.exists("mingw"))
-					{
-						var libraries = ["libwinpthread-1.dll", "libstdc++-6.dll", "libssp-0.dll"];
-						if (is64)
-						{
-							libraries.push("libgcc_s_seh-1.dll");
-						}
-						else
-						{
-							libraries.push("libgcc_s_dw2-1.dll");
-						}
-
-						for (library in libraries)
-						{
-							copyMinGWLib(library, targetDirectory + "/obj/" + library);
-						}
-					}
 				}
 				else
 				{
@@ -550,24 +533,6 @@ class WindowsPlatform extends PlatformTarget
 					System.runCommand("", System.findTemplate(templates, "bin/ReplaceVistaIcon.exe"), [executablePath, iconPath, "1"], true, true);
 				}
 			}
-		}
-	}
-
-	private function copyMinGWLib(name:String, toCopy:String) {
-		if (System.hostPlatform == LINUX) {
-			final bits:String = (is64) ? 'x86_64' : 'i686';
-			final paths:Array<String> = ['/usr/lib/gcc/$bits-w64-mingw32/*-win32', '/usr/$bits-w64-mingw32/lib'];
-			for (path in paths)
-			{
-				if (FileSystem.exists('$path/$name'))
-				{
-					File.copy('$path/$name', toCopy);
-				}
-			}
-		}
-		else
-		{
-			throw "You're not using Linux, are you?";
 		}
 	}
 
