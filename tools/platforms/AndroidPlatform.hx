@@ -88,7 +88,16 @@ class AndroidPlatform extends PlatformTarget
 		}
 		else
 		{
-			defaults.architectures = [Architecture.ARMV7, Architecture.ARM64];
+			if (project.targetFlags.exists("ONLY_ARMV7"))
+				defaults.architectures = [Architecture.ARMV7];
+			else if (project.targetFlags.exists("ONLY_ARM64"))
+				defaults.architectures = [Architecture.ARM64];
+			else if (project.targetFlags.exists("ONLY_X86"))
+				defaults.architectures = [Architecture.X86];
+			else if (project.targetFlags.exists("ONLY_X86_64"))
+				defaults.architectures = [Architecture.X64];
+			else
+				defaults.architectures = [Architecture.ARMV7, Architecture.ARM64];
 		}
 
 		for (excludeArchitecture in defaults.excludeArchitectures)
