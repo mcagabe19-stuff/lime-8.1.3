@@ -88,16 +88,7 @@ class AndroidPlatform extends PlatformTarget
 		}
 		else
 		{
-			if (project.targetFlags.exists("ONLY_ARMV7"))
-				defaults.architectures = [Architecture.ARMV7];
-			else if (project.targetFlags.exists("ONLY_ARM64"))
-				defaults.architectures = [Architecture.ARM64];
-			else if (project.targetFlags.exists("ONLY_X86"))
-				defaults.architectures = [Architecture.X86];
-			else if (project.targetFlags.exists("ONLY_X86_64"))
-				defaults.architectures = [Architecture.X64];
-			else
-				defaults.architectures = [Architecture.ARMV7, Architecture.ARM64];
+			defaults.architectures = [Architecture.ARMV7, Architecture.ARM64];
 		}
 
 		for (excludeArchitecture in defaults.excludeArchitectures)
@@ -163,6 +154,15 @@ class AndroidPlatform extends PlatformTarget
 		if (hasARM64) architectures.push(Architecture.ARM64);
 		if (hasX86) architectures.push(Architecture.X86);
 		if (hasX64) architectures.push(Architecture.X64);
+
+		if (project.targetFlags.exists("ONLY_ARMV7"))
+			architectures = [Architecture.ARMV7];
+		else if (project.targetFlags.exists("ONLY_ARM64"))
+			architectures = [Architecture.ARM64];
+		else if (project.targetFlags.exists("ONLY_X86"))
+			architectures = [Architecture.X86];
+		else if (project.targetFlags.exists("ONLY_X86_64"))
+			architectures = [Architecture.X64];
 
 		if (architectures.length == 0)
 		{
