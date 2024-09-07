@@ -461,6 +461,8 @@ class AndroidPlatform extends PlatformTarget
 			"android.permission.READ_MEDIA_IMAGES",
 			"android.permission.READ_MEDIA_VIDEO",
 			"android.permission.READ_MEDIA_AUDIO",
+			"android.permission.READ_EXTERNAL_STORAGE",
+			"android.permission.WRITE_EXTERNAL_STORAGE",
 			"android.permission.REQUEST_INSTALL_PACKAGES"
 		]);
 		context.ANDROID_GRADLE_VERSION = project.config.getString("android.gradle-version", "8.0");
