@@ -12,6 +12,8 @@
 	<string>true</string>
         <key>com.apple.developer.kernel.increased-memory-limit</key>
 	<true/>
+        <key>CADisableMinimumFrameDurationOnPhone</key>
+        <true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<string>true</string>
         <key>NSBluetoothAlwaysUsageDescription</key>
