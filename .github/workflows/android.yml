@@ -12,7 +12,7 @@ jobs:
       - uses: nttld/setup-ndk@main
         id: setup-ndk
         with:
-          ndk-version: r22b
+          ndk-version: r23c
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
