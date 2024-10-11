@@ -379,11 +379,32 @@ class AndroidPlatform extends PlatformTarget
 		var armv7 = (command == "rebuild" || ArrayTools.containsValue(project.architectures, Architecture.ARMV7));
 		var arm64 = (command == "rebuild" || ArrayTools.containsValue(project.architectures, Architecture.ARM64));
 		var x86 = (command == "rebuild" || ArrayTools.containsValue(project.architectures, Architecture.X86));
-		var x64 = (/*command == "rebuild" ||*/ ArrayTools.containsValue(project.architectures, Architecture.X64));
+		var x64 = (command == "rebuild" || ArrayTools.containsValue(project.architectures, Architecture.X64));
 
 		var commands = [];
 
 		var minimumSDKVersion = project.config.getInt("android.minimum-sdk-version", 24);
+
+		if (project.targetFlags.exists("ONLY_ARMV7"))
+		{
+			armv7 = true;
+			armv5 = arm64 = x86 = x64 = false;
+		}
+		else if (project.targetFlags.exists("ONLY_ARM64"))
+		{
+			arm64 = true;
+			armv5 = armv7 = x86 = x64 = false;
+		}
+		else if (project.targetFlags.exists("ONLY_X86"))
+		{
+			x86 = true;
+			armv5 = arm64 = armv7 = x64 = false;
+		}
+		else if (project.targetFlags.exists("ONLY_X86_64"))
+		{
+			x64 = true;
+			armv5 = arm64 = armv7 = x86 = false;
+		}
 
 		if (armv5) commands.push(["-Dandroid", "-DPLATFORM=android-" + minimumSDKVersion, "-DPLATFORM_NUMBER=" + minimumSDKVersion]);
 		if (armv7) commands.push(["-Dandroid", "-DHXCPP_ARMV7", "-DPLATFORM=android-" + minimumSDKVersion, "-DPLATFORM_NUMBER=" + minimumSDKVersion]);
