@@ -36,10 +36,10 @@ jobs:
       - name: Rebuild Lime (Android)
         continue-on-error: true
         run: |
-          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_ARMV7
-          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_ARM64
-          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_X86
-          lime rebuild android -release -nocolor -nocffi -eval -D HXCPP_X86_64
+          lime rebuild android -release -nocolor -nocffi -eval -ONLY_ARMV7
+          lime rebuild android -release -nocolor -nocffi -eval -ONLY_ARM64
+          lime rebuild android -release -nocolor -nocffi -eval -ONLY_X86
+          lime rebuild android -release -nocolor -nocffi -eval -ONLY_X86_64
       - uses: actions/upload-artifact@v3
         with:
           name: Android-NDLL
