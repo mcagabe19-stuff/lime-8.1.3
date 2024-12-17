@@ -17,6 +17,7 @@ android {
 	compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
 	buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 	::if (ANDROID_GRADLE_PLUGIN>="4.0")::ndkPath '::ANDROID_NDK_ROOT_ESCAPED::'::end::
+	::if (ANDROID_GRADLE_PLUGIN>="4.0")::ndkVersion '::ANDROID_NDK_VERSION::'::end::
 
 	defaultConfig {
 		applicationId "::META_PACKAGE_NAME::"
@@ -69,10 +70,21 @@ android {
 
 	buildTypes {
 		release {
+			::if (ANDROID_MINIFY)::
+			// minifyEnabled true
+			// shrinkResources true
+			// proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+			::end::
 			minifyEnabled false
 			signingConfig signingConfigs.release
 		}
 	}
+
+	::if (ANDROID_USE_ANDROIDX)::
+	buildFeatures {
+        buildConfig = true
+    }
+	::end::
 
 	android.applicationVariants.all { variant ->
 		variant.outputs.all { output ->
@@ -84,6 +96,9 @@ android {
 }
 
 dependencies {
+	::if (ANDROID_USE_ANDROIDX)::
+	implementation 'androidx.core:core:1.6.0'
+	::end::
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	::if (ANDROID_LIBRARY_PROJECTS)::::foreach (ANDROID_LIBRARY_PROJECTS)::implementation project(':deps:::name::')
 	::end::::end::

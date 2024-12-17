@@ -7,7 +7,7 @@
 	::if (ANDROID_PERMISSIONS != null)::::foreach ANDROID_PERMISSIONS::<uses-permission android:name="::__current__::" />
 	::end::::end::
 
-	<application android:label="::APP_TITLE::" android:appCategory="game" ::if (HAS_ICON):: android:icon="@drawable/icon"::end:: android:allowBackup="true" android:theme="@android:style/Theme.NoTitleBar::if (WIN_FULLSCREEN)::.Fullscreen::end::" android:hardwareAccelerated="true" android:requestLegacyExternalStorage="true" ::if (ANDROID_TARGET_SDK_VERSION>=30):: android:preserveLegacyExternalStorage="true" android:allowNativeHeapPointerTagging="false" ::end::>
+	<application android:label="::APP_TITLE::" android:appCategory="game" ::if (HAS_ICON):: android:icon="@drawable/icon"::end:: android:allowBackup="true" android:theme="@android:style/Theme.NoTitleBar::if (WIN_FULLSCREEN)::.Fullscreen::end::" android:hardwareAccelerated="true" android:requestLegacyExternalStorage="true" ::if (ANDROID_TARGET_SDK_VERSION>=30):: android:preserveLegacyExternalStorage="true" android:allowNativeHeapPointerTagging="false" ::end:: android:largeHeap="true">
 
 		::if (WIN_ORIENTATION=="portrait")::
 		<meta-data android:name="SDL_ENV.SDL_IOS_ORIENTATIONS" android:value=  "Portrait PortraitUpsideDown" />
@@ -28,6 +28,17 @@
 			</intent-filter>
 
 		</activity>
+
+		::if (ANDROID_USE_ANDROIDX)::
+		<provider
+        	android:name="androidx.core.content.FileProvider"
+        	android:authorities="::APP_PACKAGE::.fileprovider"
+        	android:exported="false"
+        	android:grantUriPermissions="true"
+			tools:replace="android:authorities">
+        	<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
+    	</provider>
+		::end::
 
 	</application>
 
