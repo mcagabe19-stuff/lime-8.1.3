@@ -34,7 +34,6 @@ jobs:
           haxelib run lime config ANDROID_SETUP true
           haxelib run lime setup -alias -y -nocffi
       - name: Rebuild Lime (Android)
-        continue-on-error: true
         run: |
           lime rebuild android -release -nocolor -nocffi -eval -ONLY_ARMV7
           lime rebuild android -release -nocolor -nocffi -eval -ONLY_ARM64
