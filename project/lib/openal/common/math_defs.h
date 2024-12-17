@@ -33,7 +33,7 @@ static const union msvc_inf_hack {
             return logf(f) / logf(2.0f);
         }
     #endif
-#endi
+#endif
 
 #ifndef HAVE_CBRTF
 static inline float cbrtf(float f)
